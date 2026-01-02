@@ -181,9 +181,13 @@ export function EditorWithViewer({
   // Execute initial code on mount if autoRun is enabled
   useEffect(() => {
     if (autoRun && initialCode) {
-      executeCode(initialCode);
+      // Small delay to ensure StoryManager is ready
+      const timer = setTimeout(() => {
+        executeCode(initialCode);
+      }, 100);
+      return () => clearTimeout(timer);
     }
-  }, []);
+  }, [autoRun, initialCode, executeCode]);
 
   // Cleanup timer on unmount
   useEffect(() => {
