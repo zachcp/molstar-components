@@ -2,62 +2,93 @@
 import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 import type { JSX } from "preact";
 
+/**
+ * Configuration options for the Molstar viewer.
+ * Controls the layout and visibility of various UI elements.
+ */
 export interface MolstarViewerConfig {
+  /** Whether the layout is expanded */
   layoutIsExpanded?: boolean;
+  /** Show control panel */
   layoutShowControls?: boolean;
+  /** Show remote state controls */
   layoutShowRemoteState?: boolean;
+  /** Show sequence viewer */
   layoutShowSequence?: boolean;
+  /** Show log panel */
   layoutShowLog?: boolean;
+  /** Show left side panel */
   layoutShowLeftPanel?: boolean;
+  /** Show viewport expand button */
   viewportShowExpand?: boolean;
+  /** Show selection mode controls */
   viewportShowSelectionMode?: boolean;
+  /** Show animation controls */
   viewportShowAnimation?: boolean;
+  /** Additional configuration options */
   [key: string]: any;
 }
 
+/**
+ * Options for loading MVS (Mol* View State) data into the viewer.
+ */
 export interface MVSLoadOptions {
+  /** Whether to append snapshots to existing data instead of replacing */
   appendSnapshots?: boolean;
+  /** Whether to preserve the current camera position when loading */
   keepCamera?: boolean;
 }
 
+/**
+ * Props for the MolstarViewer component.
+ */
 export interface MolstarViewerProps {
   /**
-   * Molstar MVS data as JSON object
+   * Molstar MVS (Mol* View State) data as JSON object.
+   * This data defines the molecular structure and visualization state.
    */
   mvsData: any;
 
   /**
-   * Viewer configuration options
+   * Viewer configuration options.
+   * Controls UI elements and viewer behavior.
+   * @defaultValue `{ layoutIsExpanded: false, layoutShowControls: false }`
    */
   config?: MolstarViewerConfig;
 
   /**
-   * MVS loading options
+   * MVS loading options.
+   * Controls how the MVS data is loaded into the viewer.
+   * @defaultValue `{ appendSnapshots: false, keepCamera: false }`
    */
   loadOptions?: MVSLoadOptions;
 
   /**
-   * Container style
+   * Custom CSS styles for the viewer container.
+   * @defaultValue `{ position: "relative", width: "100%", height: "500px" }`
    */
   style?: JSX.CSSProperties;
 
   /**
-   * Container class name
+   * CSS class name for the viewer container.
    */
   className?: string;
 
   /**
-   * Callback when viewer is initialized
+   * Callback invoked when the viewer is initialized.
+   * @param viewer - The initialized Molstar viewer instance
    */
   onViewerInit?: (viewer: any) => void;
 
   /**
-   * Callback when MVS data is loaded
+   * Callback invoked when MVS data is successfully loaded.
+   * @param viewer - The Molstar viewer instance with loaded data
    */
   onMVSLoaded?: (viewer: any) => void;
 
   /**
-   * Callback when an error occurs
+   * Callback invoked when an error occurs during initialization or loading.
+   * @param error - The error that occurred
    */
   onError?: (error: Error) => void;
 }
@@ -72,6 +103,39 @@ const defaultLoadOptions: MVSLoadOptions = {
   keepCamera: false,
 };
 
+/**
+ * MolstarViewer component for displaying molecular structures.
+ *
+ * This component integrates the Molstar viewer library to display molecular
+ * structures from MVS (Mol* View State) data. It handles viewer initialization,
+ * loading molecular data, and provides callbacks for key lifecycle events.
+ *
+ * The component expects the Molstar library to be loaded from a CDN and available
+ * on the global window object. It will wait up to 10 seconds for the library to load.
+ *
+ * @example
+ * ```tsx
+ * import { MolstarViewer } from "@zachcp/molstar-components";
+ *
+ * function App() {
+ *   const mvsData = {
+ *     // Your MVS data here
+ *   };
+ *
+ *   return (
+ *     <MolstarViewer
+ *       mvsData={mvsData}
+ *       config={{ layoutShowControls: true }}
+ *       onViewerInit={(viewer) => console.log("Viewer ready")}
+ *       style={{ height: "600px" }}
+ *     />
+ *   );
+ * }
+ * ```
+ *
+ * @param props - Component props
+ * @returns A Preact component displaying the Molstar viewer
+ */
 export function MolstarViewer({
   mvsData,
   config = {},
