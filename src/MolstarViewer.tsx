@@ -1,7 +1,6 @@
 // deno-lint-ignore-file no-explicit-any no-window
 import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 import type { JSX } from "preact";
-import "./types.ts";
 
 export interface MolstarViewerConfig {
   layoutIsExpanded?: boolean;
@@ -134,9 +133,11 @@ export function MolstarViewer({
     const initViewer = async () => {
       try {
         // Wait for molstar to be available from CDN
+        // @ts-ignore - molstar is loaded from CDN
         if (!window.molstar?.Viewer) {
           await new Promise<void>((resolve, reject) => {
             const checkMolstar = setInterval(() => {
+              // @ts-ignore - molstar is loaded from CDN
               if (window.molstar?.Viewer) {
                 clearInterval(checkMolstar);
                 resolve();
@@ -149,10 +150,12 @@ export function MolstarViewer({
             }, 10000);
           });
         }
+        // @ts-ignore - molstar is loaded from CDN
         if (!window.molstar) {
           throw new Error("Molstar not available");
         }
 
+        // @ts-ignore - molstar is loaded from CDN
         const viewer = await window.molstar.Viewer.create(
           containerRef.current!,
           mergedConfig,
