@@ -91,6 +91,13 @@ export function EditorWithViewer({
     [autoRun, autoRunDelay, executeCode],
   );
 
+  // Execute initial code on mount if autoRun is enabled
+  useEffect(() => {
+    if (autoRun && initialCode) {
+      executeCode(initialCode);
+    }
+  }, []);
+
   // Cleanup timer on unmount
   useEffect(() => {
     return () => {
