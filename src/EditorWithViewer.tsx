@@ -12,6 +12,7 @@ export interface EditorWithViewerProps {
   viewerHeight?: string;
   autoRun?: boolean;
   autoRunDelay?: number;
+  hiddenCode?: string;
 }
 
 export function EditorWithViewer({
@@ -21,38 +22,48 @@ export function EditorWithViewer({
   viewerHeight = "600px",
   autoRun = false,
   autoRunDelay = 500,
+  hiddenCode = "",
 }: EditorWithViewerProps): h.JSX.Element {
   const [mvsData, setMvsData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [currentCode, setCurrentCode] = useState(initialCode || "");
   const debounceTimerRef = useRef<number | null>(null);
 
-  const executeCode = useCallback(async (code: string) => {
-    try {
-      setError(null);
+  const executeCode = useCallback(
+    async (code: string) => {
+      try {
+        setError(null);
 
-      const storyManager = new StoryManager();
-      const sceneId = storyManager.addScene({
-        javascript: code,
-      });
+        const storyManager = new StoryManager();
 
-      const scene = storyManager.getScene(sceneId);
-      if (!scene) {
-        throw new Error("Failed to retrieve scene");
+        // Set global JavaScript code if provided
+        if (hiddenCode) {
+          storyManager.setGlobalJavascript(hiddenCode);
+        }
+
+        const sceneId = storyManager.addScene({
+          javascript: code,
+        });
+
+        const scene = storyManager.getScene(sceneId);
+        if (!scene) {
+          throw new Error("Failed to retrieve scene");
+        }
+
+        const mvsDataResult = await storyManager.toMVS([scene]);
+
+        if (!mvsDataResult) {
+          throw new Error("Failed to generate valid MVS data");
+        }
+
+        setMvsData(mvsDataResult);
+      } catch (err: any) {
+        const errorMsg = err.message || "Error executing code";
+        setError(errorMsg);
       }
-
-      const mvsDataResult = await storyManager.toMVS([scene]);
-
-      if (!mvsDataResult) {
-        throw new Error("Failed to generate valid MVS data");
-      }
-
-      setMvsData(mvsDataResult);
-    } catch (err: any) {
-      const errorMsg = err.message || "Error executing code";
-      setError(errorMsg);
-    }
-  }, []);
+    },
+    [hiddenCode],
+  );
 
   const handleSave = useCallback(
     (code: string) => {
