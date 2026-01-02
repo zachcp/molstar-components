@@ -111,10 +111,7 @@
                         from <code>@zachcp/molstar-components</code>
                     </p>
                     <p class="text-sm opacity-60">
-                        Edit code and press <kbd class="kbd kbd-sm">Ctrl</kbd> +
-                        <kbd class="kbd kbd-sm">S</kbd> (or
-                        <kbd class="kbd kbd-sm">Cmd</kbd> +
-                        <kbd class="kbd kbd-sm">S</kbd>) to execute
+                        Edit code and see live updates (500ms debounce)
                     </p>
 
                     <div id="editor-viewer-container"></div>
@@ -191,6 +188,8 @@
                             layout: "horizontal",
                             editorHeight: "600px",
                             viewerHeight: "600px",
+                            autoRun: true,
+                            autoRunDelay: 500,
                         }),
                         editorViewerContainer,
                     );
