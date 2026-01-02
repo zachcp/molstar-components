@@ -5,16 +5,103 @@ import { StoryManager } from "@molstar/mol-view-stories";
 import { MolViewEditor } from "./MolViewEditor.tsx";
 import { MolstarViewer } from "./MolstarViewer.tsx";
 
+/**
+ * Props for the EditorWithViewer component.
+ */
 export interface EditorWithViewerProps {
+  /**
+   * Initial code to display in the editor.
+   * @defaultValue Empty string
+   */
   initialCode?: string;
+  /**
+   * Layout orientation for the editor and viewer.
+   * - "horizontal": Editor and viewer side-by-side
+   * - "vertical": Editor above viewer
+   * @defaultValue "horizontal"
+   */
   layout?: "horizontal" | "vertical";
+  /**
+   * Height of the editor panel.
+   * @defaultValue "600px"
+   */
   editorHeight?: string;
+  /**
+   * Height of the viewer panel.
+   * @defaultValue "600px"
+   */
   viewerHeight?: string;
+  /**
+   * Whether to automatically execute code as the user types.
+   * When enabled, code execution is debounced based on `autoRunDelay`.
+   * @defaultValue false
+   */
   autoRun?: boolean;
+  /**
+   * Delay in milliseconds before auto-executing code after the user stops typing.
+   * Only applies when `autoRun` is true.
+   * @defaultValue 500
+   */
   autoRunDelay?: number;
+  /**
+   * Hidden JavaScript code that is always prepended to the user's code.
+   * Useful for setting up global variables or functions.
+   * @defaultValue Empty string
+   */
   hiddenCode?: string;
 }
 
+/**
+ * EditorWithViewer component combining a code editor and molecular viewer.
+ *
+ * This component provides an integrated development environment for creating
+ * molecular visualizations using Mol* View Stories. It combines the MolViewEditor
+ * for code editing with the MolstarViewer for real-time visualization.
+ *
+ * Features:
+ * - Side-by-side or stacked layout
+ * - Live code execution (auto-run mode) or manual execution (Ctrl/Cmd+S)
+ * - Error display for debugging
+ * - Hidden code execution for setup/utility functions
+ * - Debounced auto-execution to reduce unnecessary renders
+ *
+ * @example
+ * ```tsx
+ * import { EditorWithViewer } from "@zachcp/molstar-components";
+ *
+ * function App() {
+ *   const initialCode = `
+ *     const structure = builder
+ *       .download({ url: 'https://www.ebi.ac.uk/pdbe/entry-files/1cbs.bcif' })
+ *       .parse({ format: 'bcif' })
+ *       .modelStructure();
+ *
+ *     structure
+ *       .component({ selector: 'polymer' })
+ *       .representation({ type: 'cartoon' })
+ *       .color({ color: 'blue' });
+ *   `;
+ *
+ *   return (
+ *     <EditorWithViewer
+ *       initialCode={initialCode}
+ *       layout="horizontal"
+ *       autoRun={true}
+ *       autoRunDelay={1000}
+ *     />
+ *   );
+ * }
+ * ```
+ *
+ * @remarks
+ * - In manual mode, press Ctrl/Cmd+S to execute code
+ * - In auto-run mode, code executes automatically after typing stops
+ * - Errors are displayed below the editor
+ * - The component uses StoryManager from @molstar/mol-view-stories
+ *
+ * @param props - Component props
+ * @returns A Preact component with integrated editor and viewer
+ */
 export function EditorWithViewer({
   initialCode,
   layout = "horizontal",
@@ -90,6 +177,17 @@ export function EditorWithViewer({
     },
     [autoRun, autoRunDelay, executeCode],
   );
+
+  // Execute initial code on mount if autoRun is enabled
+  useEffect(() => {
+    if (autoRun && initialCode) {
+      // Small delay to ensure StoryManager is ready
+      const timer = setTimeout(() => {
+        executeCode(initialCode);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [autoRun, initialCode, executeCode]);
 
   // Cleanup timer on unmount
   useEffect(() => {

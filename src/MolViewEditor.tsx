@@ -4,15 +4,38 @@ import type { JSX } from "preact";
 import { useEffect, useRef, useState } from "preact/hooks";
 import { MVSTypes, setupMonacoCodeCompletion } from "@molstar/mol-view-stories";
 
+/**
+ * Props for the MolViewEditor component.
+ */
 export interface MolViewEditorProps {
+  /**
+   * Initial code to display in the editor.
+   * @defaultValue Default MVS structure builder code
+   */
   initialCode?: string;
+  /**
+   * Callback invoked when the editor content changes.
+   * @param code - The current code in the editor
+   */
   onCodeChange?: (code: string) => void;
+  /**
+   * Callback invoked when the user saves (Ctrl/Cmd+S).
+   * @param code - The code to be saved
+   */
   onSave?: (code: string) => void;
+  /**
+   * Height of the editor container.
+   * @defaultValue "400px"
+   */
   height?: string;
 }
 
-// Monaco types
+/**
+ * Extended window interface for Monaco editor.
+ * @internal
+ */
 interface MonacoWindow {
+  /** Monaco editor instance from global scope */
   monaco?: any;
 }
 
@@ -26,6 +49,44 @@ structure
   .representation({ type: 'cartoon' })
   .color({ color: 'green' });`;
 
+/**
+ * MolViewEditor component for editing Mol* View Stories code.
+ *
+ * This component provides a Monaco-based code editor with syntax highlighting,
+ * autocompletion for MVS (Mol* View Stories) types, and keyboard shortcuts.
+ * It integrates with the @molstar/mol-view-stories library to provide
+ * intelligent code completion for building molecular visualizations.
+ *
+ * The component expects the Monaco editor to be loaded from a CDN and available
+ * on the global window object.
+ *
+ * @example
+ * ```tsx
+ * import { MolViewEditor } from "@zachcp/molstar-components";
+ *
+ * function App() {
+ *   const handleSave = (code: string) => {
+ *     console.log("Saved code:", code);
+ *   };
+ *
+ *   return (
+ *     <MolViewEditor
+ *       initialCode="// Your MVS code here"
+ *       onSave={handleSave}
+ *       height="500px"
+ *     />
+ *   );
+ * }
+ * ```
+ *
+ * @remarks
+ * - Press Ctrl/Cmd+S to trigger the save callback
+ * - The editor features dark theme, line numbers, and word wrap
+ * - Autocompletion for MVS types is automatically configured
+ *
+ * @param props - Component props
+ * @returns A Preact component displaying the Monaco code editor
+ */
 export function MolViewEditor({
   initialCode = DEFAULT_CODE,
   onCodeChange,
