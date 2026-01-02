@@ -1,0 +1,6 @@
+node_modules/
+.DS_Store
+*.log
+deno.lock
+docs/bundle.js
+docs/bundle.js.map
