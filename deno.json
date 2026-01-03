@@ -10,6 +10,9 @@
     "@preact/signals": "npm:@preact/signals@1.2.2",
     "@molstar/mol-view-stories": "jsr:@molstar/mol-view-stories@1.0.1"
   },
+  "tasks": {
+    "dev": "deno run --allow-net --allow-read docs/dev-server.ts"
+  },
   "exclude": ["docs/", ".github/"],
   "compilerOptions": {
     "jsx": "react-jsx",
