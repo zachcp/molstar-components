@@ -9,13 +9,13 @@ Monaco editor support for MolViewSpec.
 ## Development
 
 ```bash
-# Start development server with live reload
+# Bundle and start development server
 deno task dev
 
-# Open http://localhost:8000/docs/
+# Open http://localhost:8000/docs/index-dev.html
 ```
 
-The dev server automatically uses local source files instead of published JSR packages, allowing you to test changes immediately.
+This bundles your local source files and serves them at `docs/molstar-components.dev.js`, allowing you to test changes by refreshing the browser.
 
 ## Publishing
 

@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Molstar Components - Interactive Demo (DEV)</title>
+
+        <!-- DaisyUI + Tailwind CSS -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/daisyui@4.6.0/dist/full.min.css"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <!-- Molstar CSS -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/molstar@latest/build/viewer/molstar.css"
+        />
+
+        <!-- Monaco Editor CSS -->
+        <link
+            rel="stylesheet"
+            data-name="vs/editor/editor.main"
+            href="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/editor/editor.main.css"
+        />
+
+        <!-- Custom styles for demo -->
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <!-- Header -->
+        <div class="navbar bg-base-100 shadow-lg">
+            <div class="flex-1">
+                <a class="btn btn-ghost text-xl"> Molstar Components (DEV) </a>
+            </div>
+            <div class="flex-none gap-2">
+                <div class="badge badge-warning">Development Mode</div>
+                <a
+                    href="https://jsr.io/@zachcp/molstar-components"
+                    target="_blank"
+                    class="btn btn-ghost btn-sm"
+                    title="View on JSR"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5"
+                        viewBox="0 0 256 256"
+                        fill="currentColor"
+                    >
+                        <path
+                            d="M256 128c0 70.7-57.3 128-128 128S0 198.7 0 128 57.3 0 128 0s128 57.3 128 128z"
+                            fill="#f7df1e"
+                        />
+                        <path
+                            d="M71.7 178.5c4.5 7.3 10.4 12.7 20.8 12.7 8.7 0 14.3-4.4 14.3-10.4 0-7.2-5.7-9.8-15.3-14l-5.2-2.2c-15.2-6.5-25.3-14.6-25.3-31.7 0-15.8 12-27.8 30.8-27.8 13.4 0 23 4.7 29.9 16.9l-16.4 10.5c-3.6-6.5-7.5-9-13.5-9-6.1 0-10 3.9-10 9 0 6.3 3.9 8.9 12.9 12.8l5.2 2.2c17.9 7.7 28 15.5 28 33.1 0 19-14.9 29.3-34.9 29.3-19.6 0-32.3-9.3-38.5-21.5l17.2-10z"
+                        />
+                        <path
+                            d="M152 107.5h21.1v63.9c0 27.1-15.9 39.4-39 39.4-20.9 0-33-10.8-39.2-23.8l17.2-10.4c4.5 8 8.6 14.8 18.5 14.8 9.5 0 15.4-3.7 15.4-18.1v-65.8z"
+                        />
+                    </svg>
+                </a>
+                <a
+                    href="https://github.com/zachcp/molstar-components"
+                    target="_blank"
+                    class="btn btn-ghost btn-sm"
+                    title="View on GitHub"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                        />
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Container -->
+        <div class="container mx-auto px-4 py-8 max-w-7xl">
+            <!-- Hero Section -->
+            <div class="hero mb-8">
+                <div class="hero-content text-center">
+                    <div class="max-w-2xl">
+                        <h1 class="text-5xl font-bold">Molstar Components</h1>
+                        <p class="py-6">
+                            Interactive molecular visualization with
+                            <code class="badge badge-secondary"
+                                >MolstarViewer</code
+                            >
+                            and
+                            <code class="badge badge-secondary"
+                                >EditorWithViewer</code
+                            >
+                            components
+                        </p>
+                        <div class="flex gap-2 justify-center flex-wrap">
+                            <div class="badge badge-outline">JSR Package</div>
+                            <div class="badge badge-outline">
+                                Preact Components
+                            </div>
+                            <div class="badge badge-warning">
+                                Local Dev Bundle
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demo 1: Simple Viewer -->
+            <div class="card bg-base-100 shadow-xl mb-8">
+                <div class="card-body">
+                    <h2 class="card-title">MolstarViewer Component</h2>
+                    <p>
+                        Using
+                        <code class="badge badge-sm">MolstarViewer</code> from
+                        <code>@zachcp/molstar-components</code>
+                    </p>
+                    <div class="h-[500px] bg-base-300 rounded-lg">
+                        <div id="viewer-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demo 2: Interactive Editor -->
+            <div class="card bg-base-100 shadow-xl mb-8">
+                <div class="card-body">
+                    <h2 class="card-title">EditorWithViewer Component</h2>
+                    <p>
+                        Using
+                        <code class="badge badge-sm">EditorWithViewer</code>
+                        from <code>@zachcp/molstar-components</code>
+                    </p>
+                    <p class="text-sm opacity-60">
+                        Edit code and toggle auto-update
+                    </p>
+
+                    <div id="editor-viewer-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Load Molstar from CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/molstar@latest/build/viewer/molstar.js"></script>
+
+        <!-- Monaco Editor Loader -->
+        <script>
+            var require = {
+                paths: {
+                    vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs",
+                },
+            };
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/editor/editor.main.nls.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/editor/editor.main.js"></script>
+
+        <!-- Import Map for ESM modules - DEVELOPMENT MODE -->
+        <script type="importmap">
+            {
+                "imports": {
+                    "preact": "https://esm.sh/preact@10.19.3",
+                    "@zachcp/molstar-components": "./molstar-components.dev.js"
+                }
+            }
+        </script>
+
+        <!-- Our application code using local bundled components -->
+        <script type="module">
+            import { h, render } from "preact";
+            import {
+                EditorWithViewer,
+                MolstarViewer,
+            } from "@zachcp/molstar-components";
+
+            // Import example data from external file
+            import { exampleMVSData, defaultCode } from "./demo-data.js";
+
+            // Initialize everything when DOM is ready
+            window.addEventListener("load", async () => {
+                try {
+                    // Render simple viewer using MolstarViewer component
+                    const viewerContainer =
+                        document.getElementById("viewer-container");
+
+                    render(
+                        h(MolstarViewer, {
+                            mvsData: exampleMVSData,
+                            config: {
+                                layoutIsExpanded: false,
+                                layoutShowControls: false,
+                                layoutShowSequence: false,
+                                layoutShowLog: false,
+                                layoutShowLeftPanel: false,
+                            },
+                            style: { height: "100%", width: "100%" },
+                        }),
+                        viewerContainer,
+                    );
+
+                    // Render EditorWithViewer component
+                    const editorViewerContainer = document.getElementById(
+                        "editor-viewer-container",
+                    );
+
+                    render(
+                        h(EditorWithViewer, {
+                            initialCode: defaultCode,
+                            layout: "horizontal",
+                            editorHeight: "600px",
+                            viewerHeight: "600px",
+                            autoRun: true,
+                            autoRunDelay: 500,
+                        }),
+                        editorViewerContainer,
+                    );
+                } catch (error) {
+                    console.error("Error rendering components:", error);
+                }
+            });
+        </script>
+    </body>
+</html>

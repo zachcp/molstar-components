@@ -5,13 +5,16 @@ This directory contains an interactive demo of the `@zachcp/molstar-components` 
 ## Development
 
 ```bash
-# From project root, run the dev server
+# From project root
 deno task dev
 
-# Open http://localhost:8000/docs/
+# This will:
+# 1. Bundle src/ to docs/molstar-components.dev.js
+# 2. Start a file server on http://localhost:8000
+# 3. Open http://localhost:8000/docs/index-dev.html
 ```
 
-The dev server (`dev-server.ts`) automatically rewrites import maps to use local source files instead of published JSR packages, enabling rapid development without needing to publish changes.
+The `index-dev.html` file uses the locally bundled `molstar-components.dev.js` instead of JSR, enabling rapid development without needing to publish changes.
 
 ## Production
 

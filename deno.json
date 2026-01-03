@@ -11,7 +11,9 @@
     "@molstar/mol-view-stories": "jsr:@molstar/mol-view-stories@1.0.1"
   },
   "tasks": {
-    "dev": "deno run --allow-net --allow-read docs/dev-server.ts"
+    "bundle": "deno bundle src/mod.ts -o docs/molstar-components.dev.js --platform browser",
+    "serve": "deno run --allow-net --allow-read jsr:@std/http/file-server -p 8000",
+    "dev": "deno task bundle && deno task serve"
   },
   "exclude": ["docs/", ".github/"],
   "compilerOptions": {
