@@ -163,65 +163,12 @@
         <script type="importmap">
             {
                 "imports": {
-                    "preact": "https://esm.sh/preact@10.19.3",
-                    "@zachcp/molstar-components": "https://esm.sh/jsr/@zachcp/molstar-components"
+                    "preact": "https://esm.sh/preact@10.19.3"
                 }
             }
         </script>
 
-        <!-- Our application code using JSR components from esm.sh -->
-        <script type="module">
-            import { h, render } from "preact";
-            import {
-                EditorWithViewer,
-                MolstarViewer,
-            } from "@zachcp/molstar-components";
-
-            // Import example data from external file
-            import { exampleMVSData, defaultCode } from "./demo-data.js";
-
-            // Initialize everything when DOM is ready
-            window.addEventListener("load", async () => {
-                try {
-                    // Render simple viewer using MolstarViewer component
-                    const viewerContainer =
-                        document.getElementById("viewer-container");
-
-                    render(
-                        h(MolstarViewer, {
-                            mvsData: exampleMVSData,
-                            config: {
-                                layoutIsExpanded: false,
-                                layoutShowControls: false,
-                                layoutShowSequence: false,
-                                layoutShowLog: false,
-                                layoutShowLeftPanel: false,
-                            },
-                            style: { height: "100%", width: "100%" },
-                        }),
-                        viewerContainer,
-                    );
-
-                    // Render EditorWithViewer component
-                    const editorViewerContainer = document.getElementById(
-                        "editor-viewer-container",
-                    );
-
-                    render(
-                        h(EditorWithViewer, {
-                            initialCode: defaultCode,
-                            layout: "horizontal",
-                            editorHeight: "600px",
-                            viewerHeight: "600px",
-                            autoRun: true,
-                            autoRunDelay: 500,
-                        }),
-                        editorViewerContainer,
-                    );
-                } catch (error) {
-                    console.error("Error rendering components:", error);
-                }
-            });
-        </script>
+        <!-- Bundled application code -->
+        <script type="module" src="./bundle.js"></script>
     </body>
 </html>

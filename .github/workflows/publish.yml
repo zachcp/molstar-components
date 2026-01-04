@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write # The OIDC ID token is used for authentication with JSR.
+      id-token: write
+      pages: write
     steps:
       - uses: actions/checkout@v5
 
@@ -24,6 +25,18 @@ jobs:
 
       - name: Type Check
         run: deno check
+
+      - name: Bundle for GitHub Pages
+        run: deno task bundle
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
       - name: Publish to JSR
         run: deno publish

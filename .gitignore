@@ -4,5 +4,5 @@ node_modules/
 deno.lock
 docs/bundle.js
 docs/bundle.js.map
-docs/molstar-components.dev.js
-docs/molstar-components.dev.js.map
+docs/molstar-components.js
+docs/molstar-components.js.map
