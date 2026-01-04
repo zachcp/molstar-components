@@ -47,6 +47,11 @@ structure
   .representation({ type: 'cartoon' })
   .color({ color: 'green' });`;
 
+// Counter to generate unique URIs for Monaco models
+// This prevents "ModelService: Cannot add model because it already exists!" errors
+// when multiple editors are created on the same page
+let editorCounter = 0;
+
 /**
  * MolViewEditor component for editing Mol* View Stories code.
  *
@@ -138,11 +143,13 @@ export function MolViewEditor({
       // This configures compiler options, diagnostics, and adds type definitions
       setupMonacoCodeCompletion(monacoWithTypescript as any, MVSTypes);
 
-      // Create Monaco editor model with explicit JavaScript language
+      // Create Monaco editor model with explicit JavaScript language and unique URI
+      // Each editor instance gets a unique URI to prevent model conflicts
+      const uniqueUri = `file:///main-${++editorCounter}.js`;
       const model = monaco.editor.createModel(
         initialCode,
         "javascript",
-        monaco.Uri.parse("file:///main.js"),
+        monaco.Uri.parse(uniqueUri),
       );
 
       // Create Monaco editor
@@ -185,8 +192,13 @@ export function MolViewEditor({
 
     return () => {
       if (editorRef.current) {
+        const model = editorRef.current.getModel();
         editorRef.current.dispose();
         editorRef.current = null;
+        // Dispose the model to free memory and allow URI reuse
+        if (model) {
+          model.dispose();
+        }
       }
     };
   }, [onSave]);
