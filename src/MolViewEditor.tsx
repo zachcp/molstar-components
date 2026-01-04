@@ -4,13 +4,18 @@ import type { JSX } from "preact";
 import { useEffect, useRef, useState } from "preact/hooks";
 import { MVSTypes, setupMonacoCodeCompletion } from "@molstar/mol-view-stories";
 import * as monaco from "monaco-editor";
-import * as typescript from "monaco-editor/typescript";
 
-// Import language contributions directly
+// Import TypeScript language defaults directly from contribution module
 import {
-  conf,
-  language,
-} from "npm:monaco-editor@0.55.1/esm/vs/basic-languages/javascript/javascript.js";
+  javascriptDefaults,
+  ModuleKind,
+  ModuleResolutionKind,
+  ScriptTarget,
+  JsxEmit,
+} from "monaco-editor/typescript-contribution";
+
+// Import JavaScript syntax highlighting
+import { conf, language } from "monaco-editor/javascript-language";
 
 /**
  * Props for the MolViewEditor component.
@@ -144,20 +149,19 @@ export function MolViewEditor({
     // Initialize Monaco editor
     const initEditor = () => {
       // Enable eager model sync FIRST for immediate validation
-      typescript.javascriptDefaults.setEagerModelSync(true);
+      javascriptDefaults.setEagerModelSync(true);
 
       // Configure JavaScript compiler options for better diagnostics
-      // Use javascriptDefaults (not typescriptDefaults) for JS language mode
-      typescript.javascriptDefaults.setCompilerOptions({
-        target: typescript.ScriptTarget.ES2020,
+      javascriptDefaults.setCompilerOptions({
+        target: ScriptTarget.ES2020,
         allowNonTsExtensions: true,
-        moduleResolution: typescript.ModuleResolutionKind.NodeJs,
-        module: typescript.ModuleKind.ESNext,
+        moduleResolution: ModuleResolutionKind.NodeJs,
+        module: ModuleKind.ESNext,
         noEmit: true,
         esModuleInterop: true,
         disableSizeLimit: true,
         noErrorTruncation: true,
-        jsx: typescript.JsxEmit.None,
+        jsx: JsxEmit.None,
         allowJs: true,
         checkJs: true,
         strict: false,
@@ -171,7 +175,7 @@ export function MolViewEditor({
       });
 
       // Enable diagnostics
-      typescript.javascriptDefaults.setDiagnosticsOptions({
+      javascriptDefaults.setDiagnosticsOptions({
         noSemanticValidation: false,
         noSyntaxValidation: false,
         noSuggestionDiagnostics: false,

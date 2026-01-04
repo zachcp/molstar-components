@@ -9,8 +9,11 @@
     "preact/jsx-runtime": "npm:preact@10.28.1/jsx-runtime",
     "@preact/signals": "npm:@preact/signals@2.5.1",
     "@molstar/mol-view-stories": "jsr:@molstar/mol-view-stories@1.0.3",
-    "monaco-editor": "npm:monaco-editor@0.55.1/esm/vs/editor/editor.api.js",
-    "monaco-editor/typescript": "npm:monaco-editor@0.55.1/esm/vs/language/typescript/monaco.contribution.js",
+    "monaco-editor": "npm:monaco-editor@0.52.2/esm/vs/editor/editor.api.js",
+    "monaco-editor/typescript-contribution": "npm:monaco-editor@0.52.2/esm/vs/language/typescript/monaco.contribution.js",
+    "monaco-editor/javascript-language": "npm:monaco-editor@0.52.2/esm/vs/basic-languages/javascript/javascript.js",
+    "monaco-editor/workers/editor": "npm:monaco-editor@0.52.2/esm/vs/editor/editor.worker.js",
+    "monaco-editor/workers/typescript": "npm:monaco-editor@0.52.2/esm/vs/language/typescript/ts.worker.js",
     "esbuild": "npm:esbuild@0.27.2",
     "@luca/esbuild-deno-loader": "jsr:@luca/esbuild-deno-loader@^0.11.1",
     "@std/path": "jsr:@std/path@^1.1.4"
