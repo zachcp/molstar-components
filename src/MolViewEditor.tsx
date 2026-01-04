@@ -102,7 +102,7 @@ export function MolViewEditor({
       monaco.languages.register({ id: "javascript" });
       monaco.languages.setMonarchTokensProvider("javascript", language as any);
       monaco.languages.setLanguageConfiguration("javascript", conf as any);
-    } catch (e) {
+    } catch {
       // Language already registered, ignore
     }
 

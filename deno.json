@@ -1,6 +1,6 @@
 {
   "name": "@zachcp/molstar-components",
-  "version": "0.4.9",
+  "version": "0.4.10",
   "license": "MIT",
   "exports": "./src/mod.ts",
   "imports": {
@@ -25,6 +25,7 @@
     "dev": "deno task build && deno task serve"
   },
   "exclude": ["docs/", ".github/"],
+  "nodeModulesDir": "auto",
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
