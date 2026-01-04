@@ -11,8 +11,8 @@
     "@molstar/mol-view-stories": "jsr:@molstar/mol-view-stories@1.0.3"
   },
   "tasks": {
-    "bundle:lib": "deno bundle src/mod.ts -o docs/molstar-components.js --platform browser --external preact --external preact/hooks --external preact/jsx-runtime --external @preact/signals --minify",
-    "bundle:docs": "deno bundle docs/index.ts -o docs/bundle.js --platform browser --external preact --minify",
+    "bundle:lib": "deno bundle src/mod.ts -o docs/molstar-components.js --platform browser --minify",
+    "bundle:docs": "deno bundle docs/index.ts -o docs/bundle.js --platform browser --minify",
     "bundle": "deno task bundle:lib && deno task bundle:docs",
     "serve": "deno run --allow-net --allow-read jsr:@std/http/file-server -p 8000",
     "dev": "deno task bundle && deno task serve"

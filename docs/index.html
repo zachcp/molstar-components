@@ -159,19 +159,7 @@
         <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/editor/editor.main.nls.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/editor/editor.main.js"></script>
 
-        <!-- Import Map for ESM modules -->
-        <script type="importmap">
-            {
-                "imports": {
-                    "preact": "https://esm.sh/preact@10.19.3",
-                    "preact/hooks": "https://esm.sh/preact@10.19.3/hooks",
-                    "preact/jsx-runtime": "https://esm.sh/preact@10.19.3/jsx-runtime",
-                    "@preact/signals": "https://esm.sh/@preact/signals@1.2.2"
-                }
-            }
-        </script>
-
-        <!-- Bundled application code -->
+        <!-- Bundled application code (includes Preact) -->
         <script type="module" src="./bundle.js"></script>
     </body>
 </html>
