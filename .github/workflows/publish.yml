@@ -9,7 +9,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       id-token: write
       pages: write
     steps:
@@ -46,6 +46,20 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Create release tarball
+        run: |
+          tar -czf molstar-components-${{ github.ref_name }}.tar.gz \
+            -C docs \
+            molstar-components.js \
+            molstar-components.css \
+            assets/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: molstar-components-${{ github.ref_name }}.tar.gz
+          generate_release_notes: true
 
       - name: Publish to JSR
         run: deno publish
