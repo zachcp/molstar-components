@@ -29,6 +29,15 @@ jobs:
       - name: Build for GitHub Pages
         run: deno task build
 
+      - name: Upload library bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: molstar-components-bundle
+          path: |
+            docs/molstar-components.js
+            docs/molstar-components.css
+            docs/assets/
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
