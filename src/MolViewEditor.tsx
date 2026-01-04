@@ -35,6 +35,12 @@ export interface MolViewEditorProps {
    * @defaultValue "400px"
    */
   height?: string;
+  /**
+   * Additional Monaco editor options to customize editor behavior.
+   * These options are merged with the default options, allowing overrides.
+   * @defaultValue undefined
+   */
+  editorOptions?: monaco.editor.IStandaloneEditorConstructionOptions;
 }
 
 const DEFAULT_CODE = `const structure = builder
@@ -95,6 +101,7 @@ export function MolViewEditor({
   onCodeChange,
   onSave,
   height = "400px",
+  editorOptions,
 }: MolViewEditorProps): JSX.Element {
   const containerRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<any>(null);
@@ -152,7 +159,7 @@ export function MolViewEditor({
         monaco.Uri.parse(uniqueUri),
       );
 
-      // Create Monaco editor
+      // Create Monaco editor with default options and user overrides
       const editor = monaco.editor.create(containerRef.current!, {
         model: model,
         theme: "vs-dark",
@@ -162,11 +169,13 @@ export function MolViewEditor({
         lineNumbers: "on",
         scrollBeyondLastLine: false,
         wordWrap: "on",
-        glyphMargin: true,
-        folding: true,
+        glyphMargin: false,
+        folding: false,
+        lineNumbersMinChars: 2,
         renderValidationDecorations: "on",
         showUnused: true,
         fixedOverflowWidgets: true,
+        ...editorOptions,
       });
 
       editorRef.current = editor;

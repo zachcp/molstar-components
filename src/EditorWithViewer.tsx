@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 import { StoryManager } from "@molstar/mol-view-stories";
 import { MolViewEditor } from "./MolViewEditor.tsx";
 import { MolstarViewer } from "./MolstarViewer.tsx";
+import type * as monaco from "monaco-editor";
 
 /**
  * Log entry for execution history.
@@ -74,6 +75,12 @@ export interface EditorWithViewerProps {
    * @defaultValue true
    */
   showBottomControlPanel?: boolean;
+  /**
+   * Additional Monaco editor options to customize editor behavior.
+   * These options are passed through to the MolViewEditor component.
+   * @defaultValue undefined
+   */
+  editorOptions?: monaco.editor.IStandaloneEditorConstructionOptions;
 }
 
 /**
@@ -138,6 +145,7 @@ export function EditorWithViewer({
   showLog = true,
   showAutoUpdateToggle = true,
   showBottomControlPanel = true,
+  editorOptions,
 }: EditorWithViewerProps): h.JSX.Element {
   const [mvsData, setMvsData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
@@ -283,6 +291,7 @@ export function EditorWithViewer({
         onCodeChange: handleCodeChange,
         onSave: handleSave,
         height: editorHeight,
+        editorOptions,
       }),
       showBottomControlPanel &&
         showAutoUpdateToggle &&
