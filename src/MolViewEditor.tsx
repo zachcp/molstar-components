@@ -113,6 +113,38 @@ export function MolViewEditor({
 
     // Initialize Monaco editor
     const initEditor = () => {
+      // Configure JavaScript compiler options for better diagnostics
+      // Use javascriptDefaults (not typescriptDefaults) for JS language mode
+      typescript.javascriptDefaults.setCompilerOptions({
+        target: typescript.ScriptTarget.ES2020,
+        allowNonTsExtensions: true,
+        moduleResolution: typescript.ModuleResolutionKind.NodeJs,
+        module: typescript.ModuleKind.ESNext,
+        noEmit: true,
+        esModuleInterop: true,
+        disableSizeLimit: true,
+        noErrorTruncation: true,
+        jsx: typescript.JsxEmit.None,
+        allowJs: true,
+        checkJs: true,
+        strict: false,
+        noImplicitAny: false,
+        strictNullChecks: false,
+        noUnusedLocals: false,
+        noUnusedParameters: false,
+        skipLibCheck: true,
+        typeRoots: [],
+        lib: ["es2020"],
+      });
+
+      // Enable diagnostics
+      typescript.javascriptDefaults.setDiagnosticsOptions({
+        noSemanticValidation: false,
+        noSyntaxValidation: false,
+        noSuggestionDiagnostics: false,
+        diagnosticCodesToIgnore: [],
+      });
+
       // Create Monaco editor
       const editor = monaco.editor.create(containerRef.current!, {
         value: initialCode,
@@ -124,6 +156,11 @@ export function MolViewEditor({
         lineNumbers: "on",
         scrollBeyondLastLine: false,
         wordWrap: "on",
+        glyphMargin: true,
+        folding: true,
+        renderValidationDecorations: "on",
+        showUnused: true,
+        fixedOverflowWidgets: true,
       });
 
       editorRef.current = editor;

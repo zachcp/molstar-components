@@ -16,8 +16,9 @@
     "@std/path": "jsr:@std/path@^1.1.4"
   },
   "tasks": {
-    "build": "deno run --allow-all build.ts",
-    "serve": "deno run --allow-net --allow-read jsr:@std/http/file-server -p 8000",
+    "clean": "rm -f docs/bundle.js docs/bundle.js.map docs/bundle.css docs/molstar-components.js docs/molstar-components.js.map docs/molstar-components.css && rm -rf docs/assets",
+    "build": "deno task clean && deno run --allow-all build.ts",
+    "serve": "deno run --allow-net --allow-read jsr:@std/http/file-server --host 127.0.0.1 -p 8000",
     "dev": "deno task build && deno task serve"
   },
   "exclude": ["docs/", ".github/"],
