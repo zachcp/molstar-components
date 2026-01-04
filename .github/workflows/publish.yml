@@ -36,7 +36,8 @@ jobs:
           path: |
             docs/molstar-components.js
             docs/molstar-components.css
-            docs/assets/
+            docs/editor.worker.js
+            docs/ts.worker.js
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
@@ -49,11 +50,12 @@ jobs:
 
       - name: Create release tarball
         run: |
-          tar -czf molstar-components-${{ github.ref_name }}.tar.gz \
-            -C docs \
+          cd docs
+          tar -czf ../molstar-components-${{ github.ref_name }}.tar.gz \
             molstar-components.js \
             molstar-components.css \
-            assets/
+            editor.worker.js \
+            ts.worker.js
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
