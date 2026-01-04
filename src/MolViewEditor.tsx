@@ -5,14 +5,8 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import { MVSTypes, setupMonacoCodeCompletion } from "@molstar/mol-view-stories";
 import * as monaco from "monaco-editor";
 
-// Import TypeScript language defaults directly from contribution module
-import {
-  javascriptDefaults,
-  ModuleKind,
-  ModuleResolutionKind,
-  ScriptTarget,
-  JsxEmit,
-} from "monaco-editor/typescript-contribution";
+// Import TypeScript language contribution to register with Monaco
+import "monaco-editor/typescript-contribution";
 
 // Import JavaScript syntax highlighting
 import { conf, language } from "monaco-editor/javascript-language";
@@ -128,59 +122,11 @@ export function MolViewEditor({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Handler to prevent Cmd+S from triggering browser save or other actions
-    // Only fires when the editor container has focus
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "s") {
-        // Check if the event target is within the editor container
-        if (
-          containerRef.current &&
-          containerRef.current.contains(e.target as Node)
-        ) {
-          e.preventDefault();
-          e.stopPropagation();
-          if (onSave && editorRef.current) {
-            onSave(editorRef.current.getValue());
-          }
-        }
-      }
-    };
-
     // Initialize Monaco editor
     const initEditor = () => {
-      // Enable eager model sync FIRST for immediate validation
-      javascriptDefaults.setEagerModelSync(true);
-
-      // Configure JavaScript compiler options for better diagnostics
-      javascriptDefaults.setCompilerOptions({
-        target: ScriptTarget.ES2020,
-        allowNonTsExtensions: true,
-        moduleResolution: ModuleResolutionKind.NodeJs,
-        module: ModuleKind.ESNext,
-        noEmit: true,
-        esModuleInterop: true,
-        disableSizeLimit: true,
-        noErrorTruncation: true,
-        jsx: JsxEmit.None,
-        allowJs: true,
-        checkJs: true,
-        strict: false,
-        noImplicitAny: false,
-        strictNullChecks: false,
-        noUnusedLocals: false,
-        noUnusedParameters: false,
-        skipLibCheck: true,
-        typeRoots: [],
-        lib: ["es2020"],
-      });
-
-      // Enable diagnostics
-      javascriptDefaults.setDiagnosticsOptions({
-        noSemanticValidation: false,
-        noSyntaxValidation: false,
-        noSuggestionDiagnostics: false,
-        diagnosticCodesToIgnore: [],
-      });
+      // Setup Monaco code completion with MVS types BEFORE creating editor
+      // This configures compiler options, diagnostics, and adds type definitions
+      setupMonacoCodeCompletion(monaco as any, MVSTypes);
 
       // Create Monaco editor model with explicit JavaScript language
       const model = monaco.editor.createModel(
@@ -208,10 +154,7 @@ export function MolViewEditor({
 
       editorRef.current = editor;
 
-      // Setup Monaco code completion with MVS types
-      setupMonacoCodeCompletion(monaco as any, MVSTypes);
-
-      // Add keyboard shortcuts for save
+      // Keyboard shortcut for save (Ctrl/Cmd+S)
       editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
         if (onSave) {
           onSave(editor.getValue());
@@ -228,13 +171,9 @@ export function MolViewEditor({
       setIsReady(true);
     };
 
-    // Add global event listener
-    document.addEventListener("keydown", handleKeyDown, true);
-
     initEditor();
 
     return () => {
-      document.removeEventListener("keydown", handleKeyDown, true);
       if (editorRef.current) {
         editorRef.current.dispose();
         editorRef.current = null;
