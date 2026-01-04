@@ -338,7 +338,9 @@ export function EditorWithViewer({
                 fontSize: "14px",
               },
             },
-            `Execution Log (${logs.length} ${logs.length === 1 ? "entry" : "entries"}) - Click to ${logExpanded ? "collapse" : "expand"}`,
+            `Execution Log (${logs.length} ${
+              logs.length === 1 ? "entry" : "entries"
+            }) - Click to ${logExpanded ? "collapse" : "expand"}`,
           ),
           h(
             "div",
@@ -359,12 +361,11 @@ export function EditorWithViewer({
                   style: {
                     padding: "4px 10px",
                     borderBottom: "1px solid #333",
-                    color:
-                      log.level === "error"
-                        ? "#ff6b6b"
-                        : log.level === "success"
-                          ? "#51cf66"
-                          : "#ccc",
+                    color: log.level === "error"
+                      ? "#ff6b6b"
+                      : log.level === "success"
+                      ? "#51cf66"
+                      : "#ccc",
                   },
                 },
                 h(
@@ -374,7 +375,7 @@ export function EditorWithViewer({
                 ),
                 " ",
                 log.message,
-              ),
+              )
             ),
           ),
         ),
@@ -400,33 +401,33 @@ export function EditorWithViewer({
       { style: viewerContainerStyle },
       mvsData
         ? h(MolstarViewer, {
-            mvsData: mvsData,
-            config: {
-              layoutIsExpanded: false,
-              layoutShowControls: false,
-              layoutShowSequence: false,
-              layoutShowLog: false,
-              layoutShowLeftPanel: false,
-            },
-            style: { height: "100%", width: "100%" },
-          })
+          mvsData: mvsData,
+          config: {
+            layoutIsExpanded: false,
+            layoutShowControls: false,
+            layoutShowSequence: false,
+            layoutShowLog: false,
+            layoutShowLeftPanel: false,
+          },
+          style: { height: "100%", width: "100%" },
+        })
         : h(
-            "div",
-            {
-              style: {
-                height: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                border: "1px solid #333",
-                color: "#666",
-                backgroundColor: "#1e1e1e",
-              },
+          "div",
+          {
+            style: {
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              border: "1px solid #333",
+              color: "#666",
+              backgroundColor: "#1e1e1e",
             },
-            autoUpdateEnabled
-              ? "Start typing to see live updates..."
-              : "Press Ctrl/Cmd+S to execute code",
-          ),
+          },
+          autoUpdateEnabled
+            ? "Start typing to see live updates..."
+            : "Press Ctrl/Cmd+S to execute code",
+        ),
     ),
   );
 }
