@@ -9,7 +9,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       id-token: write
       pages: write
     steps:
@@ -46,15 +46,6 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            docs/molstar-components.js
-            docs/molstar-components.css
-            docs/assets/*
-          generate_release_notes: true
 
       - name: Publish to JSR
         run: deno publish
