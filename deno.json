@@ -17,6 +17,7 @@
   },
   "tasks": {
     "build": "deno run --allow-all build.ts",
+    "bundle": "deno task build",
     "serve": "deno run --allow-net --allow-read jsr:@std/http/file-server -p 8000",
     "dev": "deno task build && deno task serve"
   },
