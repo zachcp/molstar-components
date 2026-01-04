@@ -43,7 +43,7 @@ export interface EditorWithViewerProps {
   /**
    * Whether to automatically execute code as the user types.
    * When enabled, code execution is debounced based on `autoRunDelay`.
-   * @defaultValue false
+   * @defaultValue true
    */
   autoRun?: boolean;
   /**
@@ -126,7 +126,7 @@ export function EditorWithViewer({
   layout = "horizontal",
   editorHeight = "600px",
   viewerHeight = "600px",
-  autoRun = false,
+  autoRun = true,
   autoRunDelay = 500,
   hiddenCode = "",
   showLog = true,
