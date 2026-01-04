@@ -1,4 +1,4 @@
-name: Publish to JSR
+name: Publish to JSR /  GH / GH Pages
 
 on:
   push:
@@ -26,11 +26,20 @@ jobs:
       - name: Type Check
         run: deno check
 
-      - name: Build for GitHub Pages
-        run: deno task build
+      - name: Build and bundle for GitHub Pages
+        run: deno task bundle
+
+      - name: Upload library bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: molstar-components-bundle
+          path: |
+            docs/molstar-components.js
+            docs/molstar-components.css
+            docs/assets/
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./docs
 

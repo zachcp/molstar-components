@@ -1,6 +1,6 @@
 {
   "name": "@zachcp/molstar-components",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "license": "MIT",
   "exports": "./src/mod.ts",
   "imports": {
@@ -17,11 +17,9 @@
   },
   "tasks": {
     "build": "deno run --allow-all build.ts",
+    "bundle": "deno bundle docs/index.ts -o docs/bundle.js --platform browser --minify",
     "serve": "deno run --allow-net --allow-read jsr:@std/http/file-server -p 8000",
-    "dev": "deno task build && deno task serve",
-    "bundle:lib": "deno bundle src/mod.ts -o docs/molstar-components.js --platform browser --minify",
-    "bundle:docs": "deno bundle docs/index.ts -o docs/bundle.js --platform browser --minify",
-    "bundle": "deno task bundle:lib && deno task bundle:docs"
+    "dev": "deno task bundle && deno task serve"
   },
   "exclude": ["docs/", ".github/"],
   "compilerOptions": {
