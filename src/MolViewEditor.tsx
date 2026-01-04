@@ -3,6 +3,7 @@ import { h } from "preact";
 import type { JSX } from "preact";
 import { useEffect, useRef, useState } from "preact/hooks";
 import { MVSTypes, setupMonacoCodeCompletion } from "@molstar/mol-view-stories";
+import * as monaco from "monaco-editor";
 
 /**
  * Props for the MolViewEditor component.
@@ -28,15 +29,6 @@ export interface MolViewEditorProps {
    * @defaultValue "400px"
    */
   height?: string;
-}
-
-/**
- * Extended window interface for Monaco editor.
- * @internal
- */
-interface MonacoWindow {
-  /** Monaco editor instance from global scope */
-  monaco?: any;
 }
 
 const DEFAULT_CODE = `const structure = builder
@@ -118,16 +110,10 @@ export function MolViewEditor({
       }
     };
 
-    // Wait for Monaco to be available
+    // Initialize Monaco editor
     const initEditor = () => {
-      const win = window as unknown as MonacoWindow;
-      if (!win.monaco) {
-        setTimeout(initEditor, 100);
-        return;
-      }
-
       // Create Monaco editor
-      const editor = win.monaco.editor.create(containerRef.current, {
+      const editor = monaco.editor.create(containerRef.current!, {
         value: initialCode,
         language: "javascript",
         theme: "vs-dark",
@@ -142,17 +128,14 @@ export function MolViewEditor({
       editorRef.current = editor;
 
       // Setup Monaco code completion with MVS types
-      setupMonacoCodeCompletion(win.monaco, MVSTypes);
+      setupMonacoCodeCompletion(monaco, MVSTypes);
 
       // Add keyboard shortcuts for save
-      editor.addCommand(
-        win.monaco.KeyMod.CtrlCmd | win.monaco.KeyCode.KeyS,
-        () => {
-          if (onSave) {
-            onSave(editor.getValue());
-          }
-        },
-      );
+      editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
+        if (onSave) {
+          onSave(editor.getValue());
+        }
+      });
 
       // Handle content changes
       editor.onDidChangeModelContent(() => {

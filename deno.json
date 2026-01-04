@@ -8,7 +8,8 @@
     "preact/hooks": "npm:preact@10.28.1/hooks",
     "preact/jsx-runtime": "npm:preact@10.28.1/jsx-runtime",
     "@preact/signals": "npm:@preact/signals@2.5.1",
-    "@molstar/mol-view-stories": "jsr:@molstar/mol-view-stories@1.0.3"
+    "@molstar/mol-view-stories": "jsr:@molstar/mol-view-stories@1.0.3",
+    "monaco-editor": "npm:monaco-editor@0.52.2/esm/vs/editor/editor.api.js"
   },
   "tasks": {
     "bundle:lib": "deno bundle src/mod.ts -o docs/molstar-components.js --platform browser --minify",
