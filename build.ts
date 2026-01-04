@@ -1,6 +1,7 @@
 #!/usr/bin/env -S deno run --allow-all
 
 /// <reference lib="deno.ns" />
+// deno-lint-ignore-file no-explicit-any
 
 /**
  * Custom build script using esbuild to handle Monaco Editor's CSS and font files
@@ -12,15 +13,17 @@ import { resolve } from "@std/path";
 
 async function build() {
   console.log("Building library bundle...");
-  
+
   const configPath = resolve(Deno.cwd(), "./deno.json");
-  
+
   try {
     // Build the library bundle
     await esbuild.build({
-      plugins: [...denoPlugins({
-        configPath,
-      })],
+      plugins: [
+        ...denoPlugins({
+          configPath,
+        }),
+      ] as any,
       entryPoints: ["./src/mod.ts"],
       outfile: "./docs/molstar-components.js",
       bundle: true,
@@ -39,15 +42,17 @@ async function build() {
       assetNames: "assets/[name]-[hash]",
       publicPath: "./",
     });
-    
+
     console.log("✓ Library bundle created: docs/molstar-components.js");
-    
+
     // Build the docs bundle
     console.log("\nBuilding docs bundle...");
     await esbuild.build({
-      plugins: [...denoPlugins({
-        configPath,
-      })],
+      plugins: [
+        ...denoPlugins({
+          configPath,
+        }),
+      ] as any,
       entryPoints: ["./docs/index.ts"],
       outfile: "./docs/bundle.js",
       bundle: true,
@@ -66,9 +71,8 @@ async function build() {
       assetNames: "assets/[name]-[hash]",
       publicPath: "./",
     });
-    
+
     console.log("✓ Docs bundle created: docs/bundle.js");
-    
   } catch (error) {
     console.error("Build failed:", error);
     Deno.exit(1);

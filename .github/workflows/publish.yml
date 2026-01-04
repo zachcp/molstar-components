@@ -26,8 +26,8 @@ jobs:
       - name: Type Check
         run: deno check
 
-      - name: Bundle for GitHub Pages
-        run: deno task bundle
+      - name: Build for GitHub Pages
+        run: deno task build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

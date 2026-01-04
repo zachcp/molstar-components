@@ -2,6 +2,7 @@ node_modules/
 .DS_Store
 *.log
 deno.lock
+docs/assets
 docs/bundle.js
 docs/bundle.js.map
 docs/bundle.css
