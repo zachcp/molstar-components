@@ -48,20 +48,5 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-      # - name: Create release tarball
-      #   run: |
-      #     cd docs
-      #     tar -czf ../molstar-components-${{ github.ref_name }}.tar.gz \
-      #       molstar-components.js \
-      #       molstar-components.css \
-      #       editor.worker.js \
-      #       ts.worker.js
-
-      # - name: Create GitHub Release
-      #   uses: softprops/action-gh-release@v2
-      #   with:
-      #     files: molstar-components-${{ github.ref_name }}.tar.gz
-      #     generate_release_notes: true
-
       - name: Publish to JSR
         run: deno publish
