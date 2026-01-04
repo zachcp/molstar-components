@@ -8,7 +8,7 @@
     "preact/hooks": "npm:preact@10.28.1/hooks",
     "preact/jsx-runtime": "npm:preact@10.28.1/jsx-runtime",
     "@preact/signals": "npm:@preact/signals@2.5.1",
-    "@molstar/mol-view-stories": "jsr:@molstar/mol-view-stories@1.0.3",
+    "@molstar/mol-view-stories": "jsr:@molstar/mol-view-stories@1.0.4",
     "monaco-editor": "npm:monaco-editor@0.55.1/esm/vs/editor/editor.api.js",
     "monaco-editor/typescript-contribution": "npm:monaco-editor@0.55.1/esm/vs/language/typescript/monaco.contribution.js",
     "monaco-editor/javascript-language": "npm:monaco-editor@0.55.1/esm/vs/basic-languages/javascript/javascript.js",

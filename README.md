@@ -15,7 +15,9 @@ deno task dev
 # Open http://localhost:8000/docs/index-dev.html
 ```
 
-This bundles your local source files and serves them at `docs/molstar-components.dev.js`, allowing you to test changes by refreshing the browser.
+This bundles your local source files and serves them at
+`docs/molstar-components.dev.js`, allowing you to test changes by refreshing the
+browser.
 
 ## Publishing
 
