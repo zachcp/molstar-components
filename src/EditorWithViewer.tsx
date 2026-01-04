@@ -68,6 +68,12 @@ export interface EditorWithViewerProps {
    * @defaultValue true
    */
   showAutoUpdateToggle?: boolean;
+  /**
+   * Show the bottom control panel (auto-update toggle, log toggle, etc.).
+   * When false, hides all controls for a minimalistic interface.
+   * @defaultValue true
+   */
+  showBottomControlPanel?: boolean;
 }
 
 /**
@@ -131,13 +137,15 @@ export function EditorWithViewer({
   hiddenCode = "",
   showLog = true,
   showAutoUpdateToggle = true,
+  showBottomControlPanel = true,
 }: EditorWithViewerProps): h.JSX.Element {
   const [mvsData, setMvsData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [currentCode, setCurrentCode] = useState(initialCode || "");
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [autoUpdateEnabled, setAutoUpdateEnabled] = useState(autoRun);
-  const [logExpanded, setLogExpanded] = useState(true);
+  const [logExpanded, setLogExpanded] = useState(false);
+  const [showLogPanel, setShowLogPanel] = useState(showLog);
   const debounceTimerRef = useRef<number | null>(null);
 
   const addLog = useCallback(
@@ -159,6 +167,13 @@ export function EditorWithViewer({
         setError(null);
         addLog("info", "Executing MVS code...");
 
+        // Convert 8-digit hex colors (with alpha) to 6-digit hex colors
+        // VS Code color picker adds alpha channel, but Molstar expects 6-digit hex
+        const processedCode = code.replace(
+          /#([0-9A-Fa-f]{6})[0-9A-Fa-f]{2}/g,
+          "#$1",
+        );
+
         const storyManager = new StoryManager();
 
         // Set global JavaScript code if provided
@@ -167,7 +182,7 @@ export function EditorWithViewer({
         }
 
         const sceneId = storyManager.addScene({
-          javascript: code,
+          javascript: processedCode,
         });
 
         const scene = storyManager.getScene(sceneId);
@@ -269,7 +284,8 @@ export function EditorWithViewer({
         onSave: handleSave,
         height: editorHeight,
       }),
-      showAutoUpdateToggle &&
+      showBottomControlPanel &&
+        showAutoUpdateToggle &&
         h(
           "div",
           {
@@ -277,6 +293,9 @@ export function EditorWithViewer({
               padding: "10px",
               backgroundColor: "#2a2a2a",
               borderTop: "1px solid #333",
+              display: "flex",
+              gap: "20px",
+              alignItems: "center",
             },
           },
           h(
@@ -301,21 +320,30 @@ export function EditorWithViewer({
               null,
               "Auto-update (runs code automatically after typing)",
             ),
-            !autoUpdateEnabled &&
-              h(
-                "span",
-                {
-                  style: {
-                    marginLeft: "8px",
-                    color: "#888",
-                    fontSize: "12px",
-                  },
-                },
-                "Press Ctrl/Cmd+S to execute",
-              ),
+          ),
+          h(
+            "label",
+            {
+              style: {
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                cursor: "pointer",
+                fontSize: "14px",
+              },
+            },
+            h("input", {
+              type: "checkbox",
+              checked: showLogPanel,
+              onChange: (e: any) => setShowLogPanel(e.target.checked),
+              style: { cursor: "pointer" },
+            }),
+            h("span", null, "Show execution log"),
           ),
         ),
-      showLog &&
+      showBottomControlPanel &&
+        showLog &&
+        showLogPanel &&
         logs.length > 0 &&
         h(
           "details",
@@ -361,11 +389,12 @@ export function EditorWithViewer({
                   style: {
                     padding: "4px 10px",
                     borderBottom: "1px solid #333",
-                    color: log.level === "error"
-                      ? "#ff6b6b"
-                      : log.level === "success"
-                      ? "#51cf66"
-                      : "#ccc",
+                    color:
+                      log.level === "error"
+                        ? "#ff6b6b"
+                        : log.level === "success"
+                          ? "#51cf66"
+                          : "#ccc",
                   },
                 },
                 h(
@@ -375,11 +404,12 @@ export function EditorWithViewer({
                 ),
                 " ",
                 log.message,
-              )
+              ),
             ),
           ),
         ),
-      error &&
+      showBottomControlPanel &&
+        error &&
         h(
           "div",
           {
@@ -401,33 +431,37 @@ export function EditorWithViewer({
       { style: viewerContainerStyle },
       mvsData
         ? h(MolstarViewer, {
-          mvsData: mvsData,
-          config: {
-            layoutIsExpanded: false,
-            layoutShowControls: false,
-            layoutShowSequence: false,
-            layoutShowLog: false,
-            layoutShowLeftPanel: false,
-          },
-          style: { height: "100%", width: "100%" },
-        })
-        : h(
-          "div",
-          {
-            style: {
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              border: "1px solid #333",
-              color: "#666",
-              backgroundColor: "#1e1e1e",
+            mvsData: mvsData,
+            config: {
+              layoutIsExpanded: false,
+              layoutShowControls: false,
+              layoutShowRemoteState: false,
+              layoutShowSequence: false,
+              layoutShowLog: false,
+              layoutShowLeftPanel: false,
+              viewportShowExpand: false,
+              viewportShowSelectionMode: false,
+              viewportShowAnimation: false,
             },
-          },
-          autoUpdateEnabled
-            ? "Start typing to see live updates..."
-            : "Press Ctrl/Cmd+S to execute code",
-        ),
+            style: { height: "100%", width: "100%" },
+          })
+        : h(
+            "div",
+            {
+              style: {
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                border: "1px solid #333",
+                color: "#666",
+                backgroundColor: "#1e1e1e",
+              },
+            },
+            autoUpdateEnabled
+              ? "Start typing to see live updates..."
+              : "Press Ctrl/Cmd+S to execute code",
+          ),
     ),
   );
 }
