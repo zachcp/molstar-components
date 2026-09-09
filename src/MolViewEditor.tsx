@@ -9,7 +9,7 @@ import * as monaco from "monaco-editor";
 import * as typescriptModule from "monaco-editor/esm/vs/language/typescript/monaco.contribution";
 
 // Import JavaScript syntax highlighting
-import { conf, language } from "monaco-editor/esm/vs/basic-languages/javascript/javascript";
+import { conf, language } from "monaco-editor/languages/definitions/javascript/javascript.js";
 
 import type { PluginUIContext } from 'molstar/lib/mol-plugin-ui/context';
 import { UIBuilderProvider } from './state-builder-ui/provider.tsx';
