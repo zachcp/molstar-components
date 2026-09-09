@@ -94,6 +94,12 @@ test.describe('Node helper dialogs', () => {
   }
 
   test('Volume (child of download/parse) and its Volume Representation child both open correctly', async ({ page }) => {
+    // Fetches real volume data from a live remote server and computes an
+    // isosurface — noticeably heavier than the other cases here. Comfortably
+    // under the default timeout locally, but slow CI runners (software-
+    // rendered WebGL, no GPU) push it right up against the 60s budget.
+    test.slow();
+
     await page.goto('/state-builder-docs.html');
     const builder = builderLocator(page);
     await expect(builder).toBeVisible();
