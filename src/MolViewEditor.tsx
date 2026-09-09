@@ -6,7 +6,7 @@ import { setupMonacoCodeCompletion, clearMonacoEditHistory } from "./utils/monac
 import * as monaco from "monaco-editor";
 
 // Import TypeScript language defaults directly from contribution module
-import * as typescriptModule from "monaco-editor/esm/vs/language/typescript/monaco.contribution";
+import * as typescriptModule from "monaco-editor/language/typescript/monaco.contribution.js";
 
 // Import JavaScript syntax highlighting
 import { conf, language } from "monaco-editor/languages/definitions/javascript/javascript.js";
