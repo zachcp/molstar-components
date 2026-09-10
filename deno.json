@@ -1,6 +1,6 @@
 {
   "name": "@molstar/molstar-components",
-  "version": "0.6.0-experimental.27",
+  "version": "0.6.0-experimental.28",
   "license": "MIT",
   "exports": {
     ".": "./src/mod.ts",
